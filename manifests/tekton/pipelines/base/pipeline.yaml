@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: okd-openshift-provider-certification
+  namespace: provider-certification
+spec:
+  params:
+    - name: cluster-name
+      type: string
+      description: The cluster being certified
+    
+
+  workspaces:
+      - name: shared-workspace
+    
+  tasks:
+    - name: fetch-repository
+      params:
+        - name: cluster-name
+          value: $(params.cluster-name)
+      taskRef:
+    - name: privider-certification-all
+      params:
+        - name: cluster-name
+          value: $(params.cluste-name)
+      taskRef:
+        kind: Task
+        name: okd-openshift-provider-certification
+      workspaces:
+        - name: src
+          workspace: shared-workspace
