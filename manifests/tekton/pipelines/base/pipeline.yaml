@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: okd-openshift-provider-certification
+  name: provider-certification
   namespace: provider-certification
 spec:
   params:
@@ -14,18 +14,13 @@ spec:
       - name: shared-workspace
     
   tasks:
-    - name: fetch-repository
+    - name: provider-certification-all
       params:
         - name: cluster-name
           value: $(params.cluster-name)
       taskRef:
-    - name: privider-certification-all
-      params:
-        - name: cluster-name
-          value: $(params.cluste-name)
-      taskRef:
         kind: Task
-        name: okd-openshift-provider-certification
+        name: provider-certification-task
       workspaces:
         - name: src
           workspace: shared-workspace

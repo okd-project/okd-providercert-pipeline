@@ -1,7 +1,7 @@
 namePrefix: 
 
 bases:
-  - task-build-all.yaml
+  - task-execute-all.yaml
   
 
 

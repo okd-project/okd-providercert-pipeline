@@ -49,11 +49,35 @@ kubectl -n provider-certifification ~/.kube debug-pod:/tmp
 
 Launch the pipeline
 
+Using kubelet apply 
+
 ```bash
 
+# update the pipelinerun file (change values)
+# ${CLUSTER_NAME} and ${PVC_NAME}
+# manifests/tekton/pipelineruns/sample-pr-kind.yaml
+kubectl apply -f manifests/tekton/pipelineruns/sample-pr-kind.yaml
 
-tkn pr list -n okd-team
-tkn pr logs <pr-name-from-previous-step> -n okd-team -f
+```
+
+Using the tkn start command
+
+```bash
+
+# this will use the pvc that has already been created
+tkn pipeline start provider-certification \
+--param cluster-name=<cluster-to-be-certified> \
+--workspace name=shared-workspace,claimName=provider-certitification-pvc
+-n provider-certification
+
+```
+
+Watch the pipeline logs
+
+```bash
+
+tkn pr list -n provider-certification
+tkn pr logs <pr-name-from-previous-step> -n provider-certifification -f
 ```
 
 ## Info
