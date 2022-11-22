@@ -9,10 +9,6 @@ spec:
       type: string
       description: The cluster being certified
     
-
-  workspaces:
-      - name: shared-workspace
-    
   tasks:
     - name: provider-certification-all
       params:
@@ -21,6 +17,3 @@ spec:
       taskRef:
         kind: Task
         name: provider-certification-task
-      workspaces:
-        - name: src
-          workspace: shared-workspace

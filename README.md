@@ -67,7 +67,6 @@ Using the tkn start command
 # this will use the pvc that has already been created
 tkn pipeline start provider-certification \
 --param cluster-name=<cluster-to-be-certified> \
---workspace name=shared-workspace,claimName=provider-certitification-pvc
 -n provider-certification
 
 ```

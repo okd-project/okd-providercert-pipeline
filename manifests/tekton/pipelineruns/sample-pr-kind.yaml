@@ -9,8 +9,3 @@ spec:
     value: ${CLUSTER_NAME}
   pipelineRef:
     name: provider-certification
-
-  workspaces:
-  - name: shared-workspace
-    persistentVolumeClaim:
-      claimName: ${PVC_NAME}

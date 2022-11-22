@@ -4,15 +4,16 @@ LABEL maintainer="luzuccar@redhat.com"
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-ENV KUBECONFIG $GOPATH/.kube/config.json
-COPY openshift-provider-cert uid_entrypoint.sh /go/ 
+ENV KUBECONFIG /config/.kube/config.json
+COPY uid_entrypoint.sh  openshift-provider-cert /go/ 
+ 
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" "/config" "/data" && chmod -R 0755 "$GOPATH"  && chmod -R 0755 "/config" && chmod -R 0755 "/data"
 
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" "$GOPATH/.kube" "$GOPATH/data" && chmod -R 0755 "$GOPATH"
-RUN chown -R 1001:root /go && chown -R 1001:root /go/.kube
+RUN chown -R 1001:root /go && chown -R 1001:root /config && chown -R 1001:root /data 
 WORKDIR $GOPATH
 
 USER 1001
 
 ENTRYPOINT [ "./uid_entrypoint.sh" ]
 
-CMD ["./openshift-provider-cert run"]
+CMD ["./openshift-provider-cert","run"]

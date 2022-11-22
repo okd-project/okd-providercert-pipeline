@@ -1,0 +1,87 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: provider-certification-task
+  namespace: provider-certification
+spec:
+  params:
+  - name: cluster-name
+    description: The name of the cluster where the certification will be executed
+    type: string
+ 
+  steps:
+  - name: certification-run
+    image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
+    imagePullPolicy: Always
+    command:
+      - ./openshift-provider-cert 
+    args: 
+      - run
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1000Mi
+      requests:
+        cpu: 250m
+        memory: 1000Mi
+    volumeMounts:
+    - name: config-mount
+      mountPath: /config
+
+
+  - name: certification-status
+    image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
+    command:
+      - ./openshift-provider-cert 
+    args: 
+      - status
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1000Mi
+      requests:
+        cpu: 250m
+        memory: 1000Mi
+    volumeMounts:
+    - name: config-mount
+      mountPath: /config
+
+  - name: certification-retrieve
+    image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
+    command:
+      - ./openshift-provider-cert 
+    args: 
+      - retrieve 
+      - results 
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1000Mi
+      requests:
+        cpu: 250m
+        memory: 1000Mi
+    volumeMounts:
+    - name: config-mount
+      mountPath: /config
+
+  - name: certification-destroy
+    image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
+    command:
+      - ./openshift-provider-cert 
+    args: 
+      - destroy
+    resources:
+      limits:
+        cpu: 250m
+        memory: 1000Mi
+      requests:
+        cpu: 250m
+        memory: 1000Mi
+    volumeMounts:
+    - name: config-mount
+      mountPath: /config
+
+  volumes:  
+  - name: config-mount
+    persistentVolumeClaim:
+      claimName: provider-cert-pvc
