@@ -28,7 +28,6 @@ spec:
     - name: config-mount
       mountPath: /config
 
-
   - name: certification-status
     image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
     command:
@@ -52,7 +51,7 @@ spec:
       - ./openshift-provider-cert 
     args: 
       - retrieve 
-      - results 
+      - /data/
     resources:
       limits:
         cpu: 250m
@@ -63,6 +62,8 @@ spec:
     volumeMounts:
     - name: config-mount
       mountPath: /config
+    - name: data-store
+      mountPath: /data
 
   - name: certification-destroy
     image:  quay.io/luzuccar/openshift-provider-cert:v0.0.1
@@ -83,5 +84,8 @@ spec:
 
   volumes:  
   - name: config-mount
+    persistentVolumeClaim:
+      claimName: provider-cert-pvc
+  - name: data-store
     persistentVolumeClaim:
       claimName: provider-cert-pvc
