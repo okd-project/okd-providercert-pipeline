@@ -13,17 +13,23 @@ A simple set of Tekton yaml files that add the relevant steps to create an ease 
 
 ### Clone the repository and build
 
-```bash
-git clone git@github.com:lmzucarelli/tekton-providercert-pipeline
+N.B. The pre-requisite is to clone the repo https://github.com/redhat-openshift-ecosystem/provider-certification-tool
 
-cd tekton-providercert-pipeline
-kd
+Follow the instructions on compiling/building and copy the binary to the working directory in the instructions that follow
+
+A Dockerfile is provided to include the binary, build and push to a registry of your choice
+
+```bash
+git clone git@github.com:okd-providercert-pipeline
+
+cd okd-providercert-pipeline
+
 
 ```
 
 ## Usage
 
-This assumes that Kind is up and running and Tekton pipelines have been deployed
+This assumes that Kind/Cluster is up and running and Tekton pipelines have been deployed
 
 Execute the following commands
 
@@ -36,10 +42,13 @@ kubectl create ns provider-certification
 kubectl get storageclass
 
 # update the patch file with the value obtained from previous step
-# manifests/tekton/utility/base/patches/patch-pvc-storageclass.yaml
+# base/apps/utility/base/patches/patch-pvc-storageclass.yaml
+
+# change the image reference in the file base/tekton.dev/tasks/base/task-execute-all.yaml
+# to the registry you pushed the image to 
 
 # deploy the manifests (pipeline and tasks)
-kubectl apply -k environment/overlay/cicd
+kubectl apply -k overlay/
 
 # use the copy feature in kubectl to copy the relevant KUBECONFIG file to the mount point /tmp
 # as an example
@@ -55,8 +64,8 @@ Using kubelet apply
 
 # update the pipelinerun file (change values)
 # ${CLUSTER_NAME} and ${PVC_NAME}
-# manifests/tekton/pipelineruns/sample-pr-kind.yaml
-kubectl apply -f manifests/tekton/pipelineruns/sample-pr-kind.yaml
+# base/tekton.dev/pipelineruns/sample-pr-kind.yaml
+kubectl apply -f base/tekton.dev/pipelineruns/sample-pr-kind.yaml
 
 ```
 
