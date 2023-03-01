@@ -1,4 +1,4 @@
-# OKD Openshift Tekton provider-certification-tool pipeline for Kind 
+# OKD Openshift Tekton provider-certification-tool pipeline for Kind/OCP/OKD clusters
 
 ## Intro
 
